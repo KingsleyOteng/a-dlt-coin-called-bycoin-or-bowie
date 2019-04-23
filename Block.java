@@ -38,7 +38,7 @@ public class Block {
      */
     public Block(String data, String previousHash) throws UnsupportedEncodingException , RuntimeException , NoSuchAlgorithmException
         {
-            
+                // setters
                 this.message = data;
                 this.priorHashSignet = previousHash;
                 this.timeStamp = new Date().getTime();
@@ -48,6 +48,7 @@ public class Block {
     
     public final String calculatedhash() throws RuntimeException, NoSuchAlgorithmException, UnsupportedEncodingException 
         {
+            // hashing script
             String calculatedhash = SignatureUtil.applySha256
             (
                 priorHashSignet + 
@@ -63,10 +64,11 @@ public class Block {
         {
             Block currentBlock;
             Block previousBlock;
-            String hashTarget = new String(new char[miningDepth]).replace('\0','0');
             
-        
-            for(int i=1; i<blockChain.size(); i++)
+            // generate a new hash block to be mined
+            // String hashTarget = new String(new char[miningDepth]).replace('\0','0');
+            
+            for(int i=1; i< blockChain.size(); i++)
                 {
                     currentBlock = blockChain.get(i);
                     previousBlock = blockChain.get(i-1);
@@ -74,14 +76,14 @@ public class Block {
                     //reclaculate and compare with the registered hash
                     if(!currentBlock.newHashSignet.equals(currentBlock.calculatedhash()))
                     {
-                        System.out.println("Hash check error in current block");
+                        System.out.println("Hash check found an error in current block");
                         return false;
                     }
                     
                     //compare previous hash and registered hash
                     if(!previousBlock.newHashSignet.equals(currentBlock.priorHashSignet))
                     {
-                        System.out.println("Hash check error in previous block");
+                        System.out.println("Hash check found an error in previous block");
                         return false;
                     }
                 }
@@ -98,7 +100,7 @@ public class Block {
                         newHashSignet = calculatedhash();
                 }
             
-            System.out.println("New Block [" + newHashSignet + "] Succesfully Mined!!! : ");
+            System.out.println("New Block [" + newHashSignet + "] Succesfully Mined !!! Isn't that awesome.");
         };
     
     /**
@@ -136,9 +138,9 @@ public class Block {
         //System.out.println("SHA256 hash for block 2 : " + secondBlock.hashCode());
         //Block thirdBlock = new Block("This is the third block","0");
         //System.out.println("SHA256 hash for block 3 : " + thirdBlock.hashCode());
-        blockChain.add(new Block("This is the first block","0"));
-        blockChain.add(new Block("This is the second block", blockChain.get(blockChain.size()-1).newHashSignet));
-        blockChain.add(new Block("This is the third block", blockChain.get(blockChain.size()-1).newHashSignet));
+        blockChain.add(new Block("This is our first group block","0"));
+        blockChain.add(new Block("This is our second group block", blockChain.get(blockChain.size()-1).newHashSignet));
+        blockChain.add(new Block("This is our third group block", blockChain.get(blockChain.size()-1).newHashSignet));
         
         String blockChainJsond = new GsonBuilder().setPrettyPrinting().create().toJson(blockChain);
         System.out.println(blockChainJsond);
