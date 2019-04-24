@@ -25,9 +25,9 @@ public class Block {
     /**
      *
      */
-    public static int miningDepth = 0x6;
+    public static int miningDepth = 0x4;
     
-    public static ArrayList<Block> blockChain = new ArrayList<Block> ();  
+    public static ArrayList<Block> blockChain = new ArrayList<> ();  
     /**
      *
      * @param data
