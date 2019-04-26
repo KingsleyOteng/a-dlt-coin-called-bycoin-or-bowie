@@ -43,17 +43,21 @@ public class TransactionsUtil {
                 sequence); 
         };
     
-    private void generateSignature(PrivateKey privateKey) throws NoSuchAlgorithmException, RuntimeException, NoSuchProviderException, InvalidKeyException, SignatureException
+    void generateSignature(PrivateKey privateKey) throws NoSuchAlgorithmException, RuntimeException, NoSuchProviderException, InvalidKeyException, SignatureException
         {
                 String message = SignatureUtil.getStringFromKey(senderAddress) + SignatureUtil.getStringFromKey(recipientAddress) + Float.toString(value);
                 signet = SignatureUtil.applyECDSASig(privateKey, message);
         }
     
-    private boolean verifySignature(PrivateKey privateKey) throws RuntimeException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException
+    boolean verifySignature() throws RuntimeException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException
         {
                 String message = SignatureUtil.getStringFromKey(senderAddress) + SignatureUtil.getStringFromKey(recipientAddress) + Float.toString(value);
                 return SignatureUtil.verifyECDSASig(senderAddress, message, signet);
         };
     
+    private boolean processTransaction() throws RuntimeException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException
+        {
+                return false;
+        }
     
 }

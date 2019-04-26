@@ -13,6 +13,13 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import com.google.gson.GsonBuilder;
+import java.security.InvalidKeyException;
+import java.security.NoSuchProviderException;
+import java.security.Security;
+import java.security.SignatureException;
+import java.util.Base64;
+import java.util.HashMap;
+
 
 public class Block {
 
@@ -27,7 +34,11 @@ public class Block {
      */
     public static int miningDepth = 0x4;
     
-    public static ArrayList<Block> blockChain = new ArrayList<> ();  
+    public static ArrayList<Block> blockChain = new ArrayList<Block>();
+    public static HashMap<String,TransactionOutputIO> UTXOs = new HashMap<String,TransactionOutputIO>(); //list of all unspent transactions. 
+    public static WalletUtil WalletA;
+    public static WalletUtil WalletB;
+    
     /**
      *
      * @param data
@@ -109,7 +120,7 @@ public class Block {
      * @throws java.io.UnsupportedEncodingException
      * @throws java.security.NoSuchAlgorithmException
      */
-    public static void main(String[] args) throws UnsupportedEncodingException, RuntimeException, NoSuchAlgorithmException 
+    public static void main(String[] args) throws UnsupportedEncodingException, RuntimeException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException 
         {
         
         blockChain.add(new Block("They call me block", "0"));
@@ -132,18 +143,38 @@ public class Block {
         System.out.println(blockchainJsond);
         
         // TODO code application logic here
-        //Block baseBlock = new Block("This is the first block","0");
-        //System.out.println("SHA256 hash for block 1 : " + baseBlock.hashCode());
-        //Block secondBlock = new Block("This is the second block","0");
-        //System.out.println("SHA256 hash for block 2 : " + secondBlock.hashCode());
-        //Block thirdBlock = new Block("This is the third block","0");
-        //System.out.println("SHA256 hash for block 3 : " + thirdBlock.hashCode());
+        Block baseBlock = new Block("This is the first block","0");
+        System.out.println("SHA256 hash for block 1 : " + baseBlock.hashCode());
+        Block secondBlock = new Block("This is the second block","0");
+        System.out.println("SHA256 hash for block 2 : " + secondBlock.hashCode());
+        Block thirdBlock = new Block("This is the third block","0");
+        System.out.println("SHA256 hash for block 3 : " + thirdBlock.hashCode());
         blockChain.add(new Block("This is our first group block","0"));
         blockChain.add(new Block("This is our second group block", blockChain.get(blockChain.size()-1).newHashSignet));
         blockChain.add(new Block("This is our third group block", blockChain.get(blockChain.size()-1).newHashSignet));
         
         String blockChainJsond = new GsonBuilder().setPrettyPrinting().create().toJson(blockChain);
         System.out.println(blockChainJsond);
+        
+        
+        //Setup Bouncey castle as a Security Provider
+	Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider()); 
+        //Create the new wallets
+		WalletA = new WalletUtil();
+		WalletB = new WalletUtil();
+                
+		//Test public and private keys
+		System.out.println("Private and public keys:");
+		System.out.println(SignatureUtil.getStringFromKey(WalletA.privateKeys));
+		System.out.println(SignatureUtil.getStringFromKey(WalletB.publicKeys));
+		//Create a test transaction from WalletA to walletB 
+		TransactionsUtil transaction = new TransactionsUtil(WalletA.publicKeys, WalletB.publicKeys, 5, null);
+		transaction.generateSignature(WalletA.privateKeys);
+		//Verify the signature works and verify it from the public key
+		System.out.println("Is signature verified");
+		System.out.println(transaction.verifySignature());
+       
+        
         
     }
     
