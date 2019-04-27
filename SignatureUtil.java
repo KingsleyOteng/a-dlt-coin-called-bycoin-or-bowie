@@ -55,7 +55,8 @@ public class SignatureUtil {
     public static byte[] applyECDSASig(PrivateKey privateKey, String input) throws RuntimeException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException
         {
             Signature dsa;
-            byte[] output = new byte[0];
+            byte[] output;
+            output = new byte[0];
             
             dsa = Signature.getInstance("ECDSA", "BC");
             dsa.initSign(privateKey);
@@ -69,7 +70,8 @@ public class SignatureUtil {
     
     public static boolean verifyECDSASig(PublicKey publicKey, String message, byte[] signet) throws RuntimeException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException
         {
-            Signature ecdsaVerify = Signature.getInstance("ECDA", "BC");
+            Signature ecdsaVerify;
+            ecdsaVerify = Signature.getInstance("ECDSA", "BC");
             ecdsaVerify.initVerify(publicKey);
             ecdsaVerify.update(message.getBytes());
             return ecdsaVerify.verify(signet);

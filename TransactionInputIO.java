@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class TransactionInputIO {
     
     public String transactionOutputId; //Reference to TransactionOutputs -> transactionId
-	public TransactionOutputIO UTXO; //Contains the Unspent transaction output
+    public TransactionOutputIO UTXO; //Contains the Unspent transaction output
 	
 	public TransactionInputIO(String transactionOutputId) {
 		this.transactionOutputId = transactionOutputId;

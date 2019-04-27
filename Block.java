@@ -32,12 +32,18 @@ public class Block {
     /**
      *
      */
-    public static int miningDepth = 0x4;
+    
     
     public static ArrayList<Block> blockChain = new ArrayList<Block>();
     public static HashMap<String,TransactionOutputIO> UTXOs = new HashMap<String,TransactionOutputIO>(); //list of all unspent transactions. 
+    public static int miningDepth = 0x4;
     public static WalletUtil WalletA;
     public static WalletUtil WalletB;
+
+    /**
+     *
+     */
+    public static int minimumTransaction = 0x5;
     
     /**
      *
@@ -158,7 +164,8 @@ public class Block {
         
         
         //Setup Bouncey castle as a Security Provider
-	Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider()); 
+                Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider()); 
+                
         //Create the new wallets
 		WalletA = new WalletUtil();
 		WalletB = new WalletUtil();
