@@ -26,7 +26,7 @@ public class TransactionsUtil {
     public static int sequence = 0; 
     
     
-    //returns sum of inputs(UTXOs) values
+    //input method
     public float getInputsValue() {
 		float total = 0;
 		for(TransactionInputIO i : ledgerOfInputs) {
@@ -36,7 +36,7 @@ public class TransactionsUtil {
 		return total;
 	}
     
-    //returns sum of outputs:
+    //outputs method
 	public float getOutputsValue() {
 		float total = 0;
 		for(TransactionOutputIO o : ledgerOfOutputs) {
@@ -82,29 +82,29 @@ public class TransactionsUtil {
 			return false;
 		}
 				
-		//gather transaction inputs (Make sure they are unspent):
+		//collect all unpsent transaction inputs
 		for(TransactionInputIO i : ledgerOfInputs) {
 			i.UTXO = Block.UTXOs.get(i.transactionOutputId);
 		}
 
-		//check if transaction is valid:
+		//ensure that transaction value falls within the bounds
 		if(getInputsValue() < Block.minimumTransaction) {
 			System.out.println("#Transaction Inputs to small: " + getInputsValue());
 			return false;
 		}
 		
-		//generate transaction outputs:
+		//generate a transaction output
 		float leftOver = getInputsValue() - value; //get value of inputs then the left over change:
 		transactionId = buildNewHash();
 		ledgerOfOutputs.add(new TransactionOutputIO( this.recipientAddress, value,transactionId)); //send value to recipient
 		ledgerOfOutputs.add(new TransactionOutputIO( this.senderAddress, leftOver,transactionId)); //send the left over 'change' back to sender		
 				
-		//add outputs to Unspent list
+		//now add outputs to the unspent ledger
 		for(TransactionOutputIO o : ledgerOfOutputs) {
 			Block.UTXOs.put(o.id , o);
 		}
 		
-		//remove transaction inputs from UTXO lists as spent:
+		//all transaction inputs may now transation to the unspent bucket; i.e. they may be purged
 		for(TransactionInputIO i : ledgerOfInputs) {
 			if(i.UTXO == null) continue; //if Transaction can't be found skip it 
 			Block.UTXOs.remove(i.UTXO.id);
