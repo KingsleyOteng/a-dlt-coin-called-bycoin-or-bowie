@@ -17,7 +17,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchProviderException;
 import java.security.Security;
 import java.security.SignatureException;
-import java.util.Base64;
 import java.util.HashMap;
 
 
@@ -25,6 +24,8 @@ public class Block {
 
     public  String newHashSignet;
     public  String priorHashSignet;
+    public String merkleRoot;
+    public ArrayList<TransactionsUtil> transactions = new ArrayList<>();
     private final String message;
     private final long timeStamp;
     private int nonce;
@@ -120,11 +121,29 @@ public class Block {
             System.out.println("New Block [" + newHashSignet + "] Succesfully Mined !!! Isn't that awesome.");
         };
     
+        //Add transactions to this block
+	public boolean addTransaction(TransactionsUtil transaction) throws RuntimeException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
+		//process transaction and check if valid, unless block is genesis block then ignore.
+		if(transaction == null) return false;		
+		if((!"0".equals(priorHashSignet))) {
+			if((transaction.processTransaction() != true)) {
+				System.out.println("Transaction failed to process. Discarded.");
+				return false;
+			}
+		}
+		transactions.add(transaction);
+		System.out.println("Transaction Successfully added to Block");
+		return true;
+        };
+    
     /**
      * @param args the command line arguments
      * reference medium.com discussions
      * @throws java.io.UnsupportedEncodingException
      * @throws java.security.NoSuchAlgorithmException
+     * @throws java.security.NoSuchProviderException
+     * @throws java.security.InvalidKeyException
+     * @throws java.security.SignatureException
      */
     public static void main(String[] args) throws UnsupportedEncodingException, RuntimeException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException 
         {
@@ -178,8 +197,9 @@ public class Block {
 		TransactionsUtil transaction = new TransactionsUtil(WalletA.publicKeys, WalletB.publicKeys, 5, null);
 		transaction.generateSignature(WalletA.privateKeys);
 		//Verify the signature works and verify it from the public key
-		System.out.println("Is signature verified");
-		System.out.println(transaction.verifySignature());
+		System.out.println(transaction.verifySignature()+": Is signature verified? ");
+                
+                
        
         
         

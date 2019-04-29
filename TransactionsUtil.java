@@ -75,7 +75,7 @@ public class TransactionsUtil {
                 return SignatureUtil.verifyECDSASig(senderAddress, message, signet);
         };
     
-    private boolean processTransaction() throws RuntimeException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException, UnsupportedEncodingException
+    public boolean processTransaction() throws RuntimeException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException, UnsupportedEncodingException
         {
                 if(verifySignature() == false) {
 			System.out.println("#Transaction Signature failed to verify");
