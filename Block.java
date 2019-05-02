@@ -22,6 +22,7 @@ import java.util.HashMap;
 
 public class Block {
 
+    // variables
     public  String newHashSignet;
     public  String priorHashSignet;
     public String merkleRoot;
@@ -64,6 +65,13 @@ public class Block {
                 
         };
     
+    /**
+     *
+     * @return 
+     * @throws UnsupportedEncodingException
+     * @throws RuntimeException
+     * @throws NoSuchAlgorithmException
+     */
     public final String calculatedhash() throws RuntimeException, NoSuchAlgorithmException, UnsupportedEncodingException 
         {
             // hashing script
@@ -78,6 +86,11 @@ public class Block {
             return calculatedhash;
         };
     
+    /**
+     * @return 
+     * @throws java.io.UnsupportedEncodingException
+     * @throws java.security.NoSuchAlgorithmException
+     */
     public static Boolean isHashCodeCheckValid() throws RuntimeException, NoSuchAlgorithmException, UnsupportedEncodingException
         {
             Block currentBlock;
@@ -109,6 +122,11 @@ public class Block {
             return true;
         };
     
+    /**
+     * @param miningDepth
+     * @throws java.io.UnsupportedEncodingException
+     * @throws java.security.NoSuchAlgorithmException
+     */
     public void miner(int miningDepth) throws RuntimeException, NoSuchAlgorithmException, UnsupportedEncodingException
         {
             String mine = new String(new char[miningDepth]).replace('\0', '0');
@@ -121,6 +139,15 @@ public class Block {
             System.out.println("New Block [" + newHashSignet + "] Succesfully Mined !!! Isn't that awesome.");
         };
     
+        /**
+     * @param transaction
+     * @return 
+     * @throws java.io.UnsupportedEncodingException
+     * @throws java.security.NoSuchAlgorithmException
+     * @throws java.security.NoSuchProviderException
+     * @throws java.security.InvalidKeyException
+     * @throws java.security.SignatureException
+     */
         //Add transactions to this block
 	public boolean addTransaction(TransactionsUtil transaction) throws RuntimeException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
 		//process transaction and check if valid, unless block is genesis block then ignore.

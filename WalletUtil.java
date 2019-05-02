@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+Wallets Class
  */
 package bydlt;
 import java.security.*;
@@ -21,7 +19,8 @@ public class WalletUtil {
         
         public HashMap<String,TransactionOutputIO> UTXOs = new HashMap<>(); //only UTXOs owned by this wallet.
 	
-        public WalletUtil()  {
+        public WalletUtil()  
+        {
             try 
                 {
                     generateKeyPair();

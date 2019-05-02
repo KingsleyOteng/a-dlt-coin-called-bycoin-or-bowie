@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+Signature generation class
  */
 package bydlt;
 import java.io.UnsupportedEncodingException;
@@ -20,7 +18,7 @@ import java.util.Base64;
 
 /**
  *
- * @author user
+ * @author Kwadwo Oteng-Amoako
  */
 public class SignatureUtil {
     
@@ -48,8 +46,8 @@ public class SignatureUtil {
         
     /**
      *
-     * @param privateKey
-     * @param input
+     * @param privateKey, SHA256 input
+     * @param input, string input
      * @return
      * @throws RuntimeException
      */
@@ -69,6 +67,14 @@ public class SignatureUtil {
             return output;
         }
     
+    /**
+     *
+     * @param publicKey, SHA256 input
+     * @param string message
+     * @param byte signet
+     * @return
+     * @throws RuntimeException
+     */
     public static boolean verifyECDSASig(PublicKey publicKey, String message, byte[] signet) throws RuntimeException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException
         {
             Signature ecdsaVerify;

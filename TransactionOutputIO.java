@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+Transactions Output Class
  */
 package bydlt;
 
@@ -11,7 +9,7 @@ import java.security.PublicKey;
 
 /**
  *
- * @author user
+ * @author kingsley oteng-amoako
  */
 public class TransactionOutputIO {
         
